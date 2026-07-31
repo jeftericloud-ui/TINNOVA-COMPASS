@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tinnova Compass · Demonstração</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#141017; --bg2:#1E1822; --ink:#F6F2F5; --soft:#A79DA6; --line:#332B3A;
+  --mag:#B3288F; --blu:#2C7BBF; --plm:#C2306A;
+  --display:'Archivo',system-ui,sans-serif; --body:'Inter',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:20px}
+body{font-family:var(--body);background:var(--bg);color:var(--ink);
+  min-height:100svh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(90% 60% at 50% -8%, rgba(179,40,143,.22) 0%, transparent 62%)}
+.wrap{width:100%;max-width:1120px;margin:0 auto;padding:0 48px}
+h1,h2,h3{font-family:var(--display);letter-spacing:-.025em;line-height:1.1}
+svg{display:block}
+
+header{padding:44px 0 0}
+.top{display:flex;align-items:center;justify-content:space-between;gap:20px}
+.top img{height:38px;filter:brightness(0) invert(1);opacity:.9}
+.badge{font-family:var(--display);font-size:.82rem;font-weight:700;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--soft);border:2px solid var(--line);border-radius:999px;padding:11px 22px}
+
+main{flex:1;display:flex;flex-direction:column;justify-content:center;padding:44px 0}
+.hero{text-align:center;margin-bottom:52px}
+.eyebrow{font-family:var(--display);font-size:.86rem;font-weight:700;letter-spacing:.42em;
+  text-transform:uppercase;color:var(--mag);margin-bottom:16px;text-indent:.42em}
+.hero h1{font-size:clamp(52px,6vw,86px);font-weight:800;margin-bottom:20px}
+.hero p{font-size:1.3rem;color:var(--soft);max-width:660px;margin:0 auto;line-height:1.5}
+
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.card{display:flex;flex-direction:column;text-align:left;background:var(--bg2);
+  border:3px solid var(--line);border-radius:26px;padding:34px 30px 30px;cursor:pointer;
+  font-family:var(--body);color:var(--ink);min-height:340px;transition:border-color .18s,transform .18s}
+.card:focus-visible{outline:5px solid var(--c);outline-offset:5px}
+.card .num{font-family:var(--display);font-size:.86rem;font-weight:800;letter-spacing:.24em;
+  color:var(--c);margin-bottom:20px}
+.card .dial{width:64px;height:64px;margin-bottom:22px}
+.card .dial circle{fill:none;stroke:var(--line);stroke-width:3}
+.card .dial .arc{stroke:var(--c);stroke-linecap:round}
+.card .dial .pin{fill:var(--c)}
+.card h3{font-size:1.55rem;margin-bottom:12px}
+.card p{font-size:1.02rem;color:var(--soft);line-height:1.5;flex:1}
+.card .go{display:flex;align-items:center;gap:11px;margin-top:24px;font-family:var(--display);
+  font-size:.88rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--c)}
+.card .go svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2.4;
+  stroke-linecap:round;stroke-linejoin:round}
+.c1{--c:var(--mag)} .c2{--c:var(--blu)} .c3{--c:var(--plm)}
+@media (hover:hover){ .card:hover{border-color:var(--c);transform:translateY(-3px)} }
+
+.bar{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:44px}
+.fsbtn{font-family:var(--display);font-size:.95rem;font-weight:700;letter-spacing:.05em;
+  text-transform:uppercase;background:transparent;color:var(--soft);border:3px solid var(--line);
+  border-radius:999px;padding:20px 40px;cursor:pointer;min-height:70px;transition:all .16s}
+.fsbtn:hover{border-color:var(--mag);color:var(--ink)}
+.fsbtn:focus-visible{outline:5px solid var(--mag);outline-offset:5px}
+
+.howto{margin-top:46px;border-top:2px solid var(--line);padding-top:32px}
+.howto .lbl{font-family:var(--display);font-size:.82rem;font-weight:700;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--soft);margin-bottom:20px;text-align:center}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.step{display:flex;gap:16px;align-items:flex-start}
+.step b{font-family:var(--display);font-size:1.5rem;font-weight:800;color:var(--line);line-height:1;flex:none}
+.step span{font-size:.98rem;color:var(--soft);line-height:1.45}
+
+footer{padding:34px 0 40px;text-align:center;font-size:.9rem;color:#6E6474}
+
+@media (max-width:900px){
+  .grid,.steps{grid-template-columns:1fr}
+  .wrap{padding:0 28px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header><div class="wrap"><div class="top">
+  <img src="data:image/png;base64,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" alt="Tinnova" />
+  <span class="badge">Demonstração interna</span>
+</div></div></header>
+
+<main><div class="wrap">
+  <div class="hero">
+    <div class="eyebrow">Compass</div>
+    <h1>Escolha um diagnóstico</h1>
+    <p>Três avaliações independentes, de dois minutos cada. Ao final, cada uma gera um mapa com o índice por dimensão e aponta a frente da Tinnova mais aderente.</p>
+  </div>
+
+  <div class="grid">
+    <button class="card c1" onclick="abrir('compass-vr-01-maturidade-ia.html')">
+      <span class="num">01</span>
+      <svg class="dial" viewBox="0 0 64 64" aria-hidden="true">
+        <circle cx="32" cy="32" r="27"/>
+        <path class="arc" d="M32 5a27 27 0 0 1 23.4 13.5" fill="none" stroke-width="4"/>
+        <path class="pin" d="M32 32 L27 27 L32 12 L37 27 Z"/>
+        <circle cx="32" cy="32" r="3.5" fill="currentColor" stroke="none" style="fill:var(--c)"/>
+      </svg>
+      <h3>Maturidade em IA</h3>
+      <p>Se a operação tem as condições para transformar IA em resultado, ou se ainda está presa no piloto que não sai do lugar.</p>
+      <span class="go">Iniciar <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    </button>
+
+    <button class="card c2" onclick="abrir('compass-vr-02-estrutura-dados.html')">
+      <span class="num">02</span>
+      <svg class="dial" viewBox="0 0 64 64" aria-hidden="true">
+        <circle cx="32" cy="32" r="27"/>
+        <path class="arc" d="M32 5a27 27 0 0 1 19.1 46.1" fill="none" stroke-width="4"/>
+        <path class="pin" d="M32 32 L27.5 28.5 L45 15 L35.5 36.5 Z"/>
+        <circle cx="32" cy="32" r="3.5" style="fill:var(--c)" stroke="none"/>
+      </svg>
+      <h3>Estrutura</h3>
+      <p>O que a base de dados e tecnologia realmente suporta hoje, e o que ela ainda não suporta.</p>
+      <span class="go">Iniciar <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    </button>
+
+    <button class="card c3" onclick="abrir('compass-vr-03-urgencia.html')">
+      <span class="num">03</span>
+      <svg class="dial" viewBox="0 0 64 64" aria-hidden="true">
+        <circle cx="32" cy="32" r="27"/>
+        <path class="arc" d="M32 5a27 27 0 1 1-19.1 46.1" fill="none" stroke-width="4"/>
+        <path class="pin" d="M32 32 L36.5 28 L54 30 L36 36 Z"/>
+        <circle cx="32" cy="32" r="3.5" style="fill:var(--c)" stroke="none"/>
+      </svg>
+      <h3>Urgência</h3>
+      <p>Quanta folga a operação ainda tem, e qual é a janela antes da pressão de mercado apertar.</p>
+      <span class="go">Iniciar <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    </button>
+  </div>
+
+  <div class="bar">
+    <button class="fsbtn" onclick="tela()">Entrar em tela cheia</button>
+  </div>
+
+  <div class="howto">
+    <div class="lbl">Como usar no visor</div>
+    <div class="steps">
+      <div class="step"><b>1</b><span>Toque em <strong>Entrar em tela cheia</strong> antes de começar. A leitura no visor fica bem melhor sem a moldura do navegador.</span></div>
+      <div class="step"><b>2</b><span>Use o gatilho do controle para selecionar. Os alvos são grandes de propósito: mire e aperte.</span></div>
+      <div class="step"><b>3</b><span>No fim, toque em <strong>Passar para a próxima pessoa</strong> para reiniciar sem tirar o visor.</span></div>
+    </div>
+  </div>
+</div></main>
+
+<footer>Tinnova Compass · Uso interno · Todas as respostas são gravadas na planilha de leads</footer>
+
+<script>
+function tela(){
+  const el = document.documentElement;
+  const req = el.requestFullscreen || el.webkitRequestFullscreen;
+  if(req) req.call(el).catch(function(){});
+}
+function abrir(arquivo){
+  tela();
+  setTimeout(function(){ location.href = arquivo; }, 120);
+}
+</script>
+</body>
+</html>
