@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Teste de voz · Tinnova Compass</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#141017; --bg2:#1E1822; --ink:#F6F2F5; --soft:#A79DA6; --line:#332B3A;
+  --mag:#B3288F; --ok:#6FD69E; --no:#FF8A80; --warn:#FFCF70;
+  --display:'Archivo',system-ui,sans-serif; --body:'Inter',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:19px}
+body{font-family:var(--body);background:var(--bg);color:var(--ink);min-height:100svh;
+  -webkit-font-smoothing:antialiased;padding:40px 0 70px;
+  background-image:radial-gradient(90% 55% at 50% -8%, rgba(179,40,143,.2) 0%, transparent 62%)}
+.wrap{max-width:820px;margin:0 auto;padding:0 40px}
+h1,h2{font-family:var(--display);letter-spacing:-.025em;line-height:1.12}
+svg{display:block}
+
+.eyebrow{font-family:var(--display);font-size:.78rem;font-weight:700;letter-spacing:.34em;
+  text-transform:uppercase;color:var(--mag);margin-bottom:14px;text-indent:.34em}
+h1{font-size:clamp(34px,4.6vw,52px);font-weight:800;margin-bottom:14px}
+.lead{font-size:1.1rem;color:var(--soft);line-height:1.5;margin-bottom:34px}
+
+.step{background:var(--bg2);border:3px solid var(--line);border-radius:22px;
+  padding:28px 30px;margin-bottom:18px}
+.step .n{font-family:var(--display);font-size:.78rem;font-weight:800;letter-spacing:.2em;
+  color:var(--mag);margin-bottom:10px}
+.step h2{font-size:1.4rem;margin-bottom:8px}
+.step p{font-size:1rem;color:var(--soft);line-height:1.5;margin-bottom:18px}
+
+.btn{font-family:var(--display);font-size:.95rem;font-weight:700;letter-spacing:.05em;
+  text-transform:uppercase;background:var(--mag);color:#fff;border:none;border-radius:999px;
+  padding:22px 44px;cursor:pointer;min-height:74px;width:100%}
+.btn:active{transform:scale(.985)}
+.btn:focus-visible{outline:5px solid var(--mag);outline-offset:5px}
+.btn[disabled]{opacity:.32;pointer-events:none}
+.btn.sec{background:transparent;color:var(--soft);border:3px solid var(--line)}
+
+.res{margin-top:18px;border-radius:16px;padding:20px 22px;font-size:1rem;line-height:1.55;
+  border:2px solid var(--line);background:rgba(255,255,255,.04);display:none}
+.res.on{display:block}
+.res b{font-family:var(--display);display:block;margin-bottom:6px;letter-spacing:.04em}
+.res.ok{border-color:var(--ok)} .res.ok b{color:var(--ok)}
+.res.no{border-color:var(--no)} .res.no b{color:var(--no)}
+.res.warn{border-color:var(--warn)} .res.warn b{color:var(--warn)}
+.res code{font-family:Consolas,monospace;font-size:.9rem;color:var(--soft);
+  word-break:break-all;display:block;margin-top:8px}
+
+.ouvindo{display:none;align-items:center;gap:16px;margin-top:18px;font-size:1.05rem;color:var(--mag)}
+.ouvindo.on{display:flex}
+.bars{display:flex;align-items:flex-end;gap:5px;height:34px}
+.bars i{width:7px;background:var(--mag);border-radius:3px;animation:pulso 1s ease-in-out infinite}
+.bars i:nth-child(1){height:12px;animation-delay:0s}
+.bars i:nth-child(2){height:26px;animation-delay:.14s}
+.bars i:nth-child(3){height:34px;animation-delay:.28s}
+.bars i:nth-child(4){height:20px;animation-delay:.42s}
+.bars i:nth-child(5){height:14px;animation-delay:.56s}
+@keyframes pulso{0%,100%{transform:scaleY(.4)}50%{transform:scaleY(1)}}
+
+.veredito{margin-top:34px;border:3px solid var(--line);border-radius:22px;padding:30px;
+  background:var(--bg2);display:none}
+.veredito.on{display:block}
+.veredito h2{font-size:1.5rem;margin-bottom:14px}
+.linha{display:flex;justify-content:space-between;gap:16px;padding:13px 0;font-size:1rem;
+  border-bottom:1px solid var(--line)}
+.linha:last-of-type{border:none}
+.linha span:last-child{font-family:var(--display);font-weight:700;flex:none}
+.sim{color:var(--ok)} .nao{color:var(--no)} .talvez{color:var(--warn)}
+textarea{width:100%;margin-top:18px;background:#0E0B10;color:var(--soft);border:2px solid var(--line);
+  border-radius:14px;padding:16px;font-family:Consolas,monospace;font-size:.88rem;
+  min-height:170px;resize:vertical}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Compass</div>
+  <h1>Teste de voz no visor</h1>
+  <p class="lead">Abra esta página no navegador do Meta Quest e siga os quatro passos na ordem. Ao final ela diz se a versão por voz é viável neste aparelho.</p>
+
+  <div class="step">
+    <div class="n">Passo 01</div>
+    <h2>O navegador tem as APIs?</h2>
+    <p>Verificação instantânea, sem permissão nenhuma.</p>
+    <button class="btn" onclick="t1()">Verificar</button>
+    <div class="res" id="r1"></div>
+  </div>
+
+  <div class="step">
+    <div class="n">Passo 02</div>
+    <h2>A IA consegue falar?</h2>
+    <p>Deve sair uma frase em português pelo alto-falante do visor.</p>
+    <button class="btn" onclick="t2()">Falar uma frase</button>
+    <div class="res" id="r2"></div>
+  </div>
+
+  <div class="step">
+    <div class="n">Passo 03</div>
+    <h2>O microfone abre?</h2>
+    <p>O Quest vai pedir permissão. Aceite.</p>
+    <button class="btn" onclick="t3()">Pedir microfone</button>
+    <div class="res" id="r3"></div>
+  </div>
+
+  <div class="step">
+    <div class="n">Passo 04</div>
+    <h2>Ele entende o que você fala?</h2>
+    <p>Este é o teste que decide tudo. Toque e diga em voz normal: <strong>"a estrutura de dados da minha empresa está bagunçada"</strong>.</p>
+    <button class="btn" onclick="t4()" id="b4">Começar a escutar</button>
+    <div class="ouvindo" id="ouvindo"><span class="bars"><i></i><i></i><i></i><i></i><i></i></span> Escutando, pode falar</div>
+    <div class="res" id="r4"></div>
+  </div>
+
+  <div class="veredito" id="veredito">
+    <h2>Resultado</h2>
+    <div id="linhas"></div>
+    <p style="margin-top:18px;font-size:1rem;color:var(--soft);line-height:1.5" id="conclusao"></p>
+    <textarea id="dump" readonly></textarea>
+    <button class="btn sec" style="margin-top:14px" onclick="copiar()">Copiar resultado</button>
+  </div>
+</div>
+
+<script>
+var R = { navegador: navigator.userAgent, apis:null, tts:null, mic:null, stt:null, vozes:[], erro:null, texto:null };
+var $ = function(id){ return document.getElementById(id); };
+
+function mostra(id, classe, titulo, corpo){
+  var el = $(id);
+  el.className = 'res on ' + classe;
+  el.innerHTML = '<b>' + titulo + '</b>' + corpo;
+}
+
+/* 01 */
+function t1(){
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  var temSR = !!SR, temTTS = 'speechSynthesis' in window;
+  var temMic = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+  R.apis = { reconhecimento: temSR, sintese: temTTS, microfone: temMic, seguro: window.isSecureContext };
+
+  var linhas = [
+    'Reconhecimento de fala: ' + (temSR ? 'presente' : 'ausente'),
+    'Síntese de voz: ' + (temTTS ? 'presente' : 'ausente'),
+    'Acesso ao microfone: ' + (temMic ? 'presente' : 'ausente'),
+    'Conexão segura (HTTPS): ' + (window.isSecureContext ? 'sim' : 'não, e isso bloqueia o microfone')
+  ].join('<br>');
+
+  if(temSR && temTTS && temMic && window.isSecureContext)
+    mostra('r1','ok','Tudo presente', linhas + '<br><br>Atenção: estar presente não garante que funcione. O passo 04 é o que vale.');
+  else if(!window.isSecureContext)
+    mostra('r1','no','Falta HTTPS', linhas + '<br><br>Abra a página por um endereço https, não por arquivo local.');
+  else
+    mostra('r1','no','Falta alguma API', linhas);
+  veredito();
+}
+
+/* 02 */
+function t2(){
+  if(!('speechSynthesis' in window)){
+    R.tts = false; mostra('r2','no','Sem síntese de voz','Este navegador não consegue falar.'); return veredito();
+  }
+  var carregar = function(){
+    var vs = speechSynthesis.getVoices() || [];
+    R.vozes = vs.map(function(v){ return v.name + ' (' + v.lang + ')'; });
+    var pt = vs.filter(function(v){ return /^pt/i.test(v.lang); });
+    var f = new SpeechSynthesisUtterance('Olá. Sou o Compass da Tinnova. Se você está ouvindo esta frase, a voz funciona neste visor.');
+    f.lang = 'pt-BR';
+    if(pt.length) f.voice = pt[0];
+    f.onend = function(){
+      R.tts = true;
+      if(pt.length)
+        mostra('r2','ok','Falou', 'Vozes em português encontradas: ' + pt.length + '<br>Usando: ' + pt[0].name + '<br>Total de vozes no aparelho: ' + vs.length);
+      else
+        mostra('r2','warn','Falou, mas sem voz em português', 'Total de vozes: ' + vs.length + '. Vai ler o português com sotaque de outra língua. Dá para contornar gerando o áudio fora do navegador.');
+      veredito();
+    };
+    f.onerror = function(e){
+      R.tts = false; mostra('r2','no','Erro ao falar', String(e.error || e)); veredito();
+    };
+    speechSynthesis.speak(f);
+    setTimeout(function(){
+      if(R.tts === null){ R.tts = false;
+        mostra('r2','no','Não saiu som', 'A chamada foi feita mas nada tocou. Verifique o volume do visor.'); veredito(); }
+    }, 9000);
+  };
+  if((speechSynthesis.getVoices()||[]).length) carregar();
+  else { speechSynthesis.onvoiceschanged = carregar; setTimeout(carregar, 1200); }
+}
+
+/* 03 */
+function t3(){
+  if(!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia)){
+    R.mic = false; mostra('r3','no','Sem acesso ao microfone','A API não existe neste navegador.'); return veredito();
+  }
+  navigator.mediaDevices.getUserMedia({ audio:true }).then(function(s){
+    R.mic = true;
+    s.getTracks().forEach(function(t){ t.stop(); });
+    mostra('r3','ok','Microfone liberado','Permissão concedida e captura funcionando.');
+    veredito();
+  }).catch(function(e){
+    R.mic = false;
+    mostra('r3','no','Microfone negado','<code>' + (e.name || '') + ': ' + (e.message || e) + '</code>');
+    veredito();
+  });
+}
+
+/* 04 */
+function t4(){
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SR){ R.stt = false; mostra('r4','no','Reconhecimento indisponível','A API não existe neste navegador.'); return veredito(); }
+
+  var rec = new SR();
+  rec.lang = 'pt-BR';
+  rec.continuous = false;
+  rec.interimResults = true;
+  var pegou = false, parcial = '';
+
+  $('b4').disabled = true;
+  $('ouvindo').classList.add('on');
+  $('r4').className = 'res';
+
+  rec.onresult = function(e){
+    var txt = '';
+    for(var i=0;i<e.results.length;i++) txt += e.results[i][0].transcript;
+    parcial = txt;
+    if(e.results[e.results.length-1].isFinal){
+      pegou = true; R.stt = true; R.texto = txt;
+      mostra('r4','ok','Entendeu','Transcrição: <code>' + txt + '</code>Este aparelho aguenta a versão por voz.');
+    } else {
+      mostra('r4','warn','Ouvindo','<code>' + txt + '</code>');
+    }
+  };
+  rec.onerror = function(e){
+    R.stt = false; R.erro = e.error;
+    var dica = e.error === 'network'
+      ? 'Erro de rede. É o sintoma clássico de navegador Chromium sem o serviço de fala do Google. Neste caso o reconhecimento por voz não vai funcionar neste navegador, por mais que a API apareça.'
+      : e.error === 'not-allowed' ? 'Permissão do microfone negada. Refaça o passo 03.'
+      : e.error === 'no-speech' ? 'Não captou fala nenhuma. Tente de novo falando mais alto e mais perto.'
+      : 'Erro reportado pelo navegador.';
+    mostra('r4','no','Falhou','<code>' + e.error + '</code>' + dica);
+    veredito();
+  };
+  rec.onend = function(){
+    $('b4').disabled = false;
+    $('ouvindo').classList.remove('on');
+    if(!pegou && R.stt === null){
+      R.stt = false; R.erro = 'sem resultado';
+      mostra('r4','no','Terminou sem resultado', parcial ? ('Só veio parcial: <code>' + parcial + '</code>') : 'Nenhuma transcrição chegou.');
+    }
+    veredito();
+  };
+
+  try { rec.start(); }
+  catch(e){
+    R.stt = false; R.erro = String(e);
+    $('b4').disabled = false; $('ouvindo').classList.remove('on');
+    mostra('r4','no','Não conseguiu iniciar','<code>' + e + '</code>');
+    veredito();
+  }
+}
+
+function tag(v){
+  if(v === true)  return '<span class="sim">SIM</span>';
+  if(v === false) return '<span class="nao">NÃO</span>';
+  return '<span class="talvez">não testado</span>';
+}
+
+function veredito(){
+  $('veredito').classList.add('on');
+  var a = R.apis || {};
+  $('linhas').innerHTML =
+    '<div class="linha"><span>APIs presentes</span>' + tag(a.reconhecimento && a.sintese && a.microfone) + '</div>' +
+    '<div class="linha"><span>A IA consegue falar</span>' + tag(R.tts) + '</div>' +
+    '<div class="linha"><span>Microfone abre</span>' + tag(R.mic) + '</div>' +
+    '<div class="linha"><span>Entende a sua fala</span>' + tag(R.stt) + '</div>';
+
+  var c;
+  if(R.stt === true && R.tts === true)
+    c = 'Caminho livre. Dá para fazer a conversa inteira por voz, nos dois sentidos.';
+  else if(R.stt === true && R.tts === false)
+    c = 'Ele escuta mas não fala. A pergunta apareceria escrita e a resposta seria falada. Ainda funciona bem.';
+  else if(R.stt === false && R.tts === true)
+    c = 'Ele fala mas não escuta. A IA conduziria por voz e a resposta seria por toque. É o desenho mais seguro para o visor.';
+  else if(R.stt === false)
+    c = 'Voz não é viável neste navegador. Vale testar o Wolvic, que é outro navegador disponível na loja do Quest, antes de descartar.';
+  else
+    c = 'Rode os quatro passos para fechar o diagnóstico.';
+  $('conclusao').textContent = c;
+
+  $('dump').value = JSON.stringify({
+    navegador: R.navegador, apis: R.apis, sintese: R.tts, microfone: R.mic,
+    reconhecimento: R.stt, erro: R.erro, transcricao: R.texto,
+    vozes: R.vozes.slice(0,14)
+  }, null, 2);
+}
+
+function copiar(){
+  var t = $('dump'); t.select(); t.setSelectionRange(0, 99999);
+  try { document.execCommand('copy'); } catch(e){}
+}
+</script>
+</body>
+</html>
